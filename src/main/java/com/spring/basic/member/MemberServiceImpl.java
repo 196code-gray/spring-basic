@@ -7,7 +7,11 @@ public class MemberServiceImpl implements MemberService{
       객체지향 원칙 중 DIP 원칙 위반.
       한마디로 역할만 알면 되는데 구현체까지 현재 의존중.
      */
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public void join(Member member) {

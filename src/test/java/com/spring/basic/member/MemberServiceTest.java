@@ -1,13 +1,20 @@
 package com.spring.basic.member;
 
+import com.spring.basic.AppConfig;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 // 방금 만든 기능들을 JUint을 이용하여 테스트.
 public class MemberServiceTest {
+    MemberService memberService;
 
-    MemberService memberService = new MemberServiceImpl();
+    @BeforeEach
+    public void beforeEach(){
+        AppConfig appConfig = new AppConfig();
+        memberService = appConfig.memberService();
+    }
 
     @Test
     @DisplayName("회원가입 성공 테스트")
