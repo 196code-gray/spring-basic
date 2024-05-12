@@ -3,12 +3,16 @@ package com.spring.basic;
 import com.spring.basic.member.Grade;
 import com.spring.basic.member.Member;
 import com.spring.basic.member.MemberService;
-import com.spring.basic.member.MemberServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MemberApp {
     public static void main(String[] args) {
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();
+
+        // 아래와 같이 코드 작성시 파라미터에 있는 환경설정을 가지고 파라미터 안에 있는 @Bean을 컨테이너에 넣어서 관리해줌.
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = ac.getBean("memberService", MemberService.class);
+
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
 
