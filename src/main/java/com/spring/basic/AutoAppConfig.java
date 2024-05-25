@@ -24,8 +24,8 @@ spring boot에서는 이렇게 이름이 같은 빈이 있으면 무조건 에�
 
 애매한 상황 만들지 않기(명확하지 않은 것 xx). 까먹음. 혼자개발하는 것 아님.
  */
-    @Bean("memoryMemberRepository")
-    MemberRepository memberRepository(){
-        return new MemoryMemberRepository();
-    }
+//    @Bean("memoryMemberRepository")
+//    MemberRepository memberRepository(){
+//        return new MemoryMemberRepository();
+//    }
 }
