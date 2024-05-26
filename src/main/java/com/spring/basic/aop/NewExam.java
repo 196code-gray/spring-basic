@@ -1,5 +1,8 @@
 package com.spring.basic.aop;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class NewExam implements Exam{
 
     private int kor;
