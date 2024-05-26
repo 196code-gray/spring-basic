@@ -3,10 +3,11 @@ package com.spring.basic.discount;
 import com.spring.basic.member.Grade;
 import com.spring.basic.member.Member;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("mainDiscountPolicy")
+@Primary
 public class RateDiscountPolicy implements DiscountPolicy{
     private int discountPercent = 10;
     @Override
