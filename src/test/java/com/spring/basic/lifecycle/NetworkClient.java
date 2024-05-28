@@ -1,5 +1,8 @@
 package com.spring.basic.lifecycle;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+
 /*
 bean 생명주기 콜백 방법
 bean 생성 -> 의존관계 주입 -> 콜백 -> 초기화
@@ -17,6 +20,11 @@ bean 생성 -> 의존관계 주입 -> 콜백 -> 초기화
     직접 메서드 이름도 변경 가능.
         destroy기능은 inferred(추론) 을 사용해서 close나 shut down이 적혀있는 메서드를 찾아줌.
 
+3. @PostConstruct, @PreDestroy
+    애너테이션을 이용한 방법.
+    스프링에서도 권장하고 있음.
+    다만 외부라이브러리에는 적용 불가.
+    외부라이브러리에는 2번 방법 적용.
  */
 public class NetworkClient {
     private String url;
@@ -40,12 +48,14 @@ public class NetworkClient {
     public void disconnect(){
         System.out.println("close = " + this.url);
     }
-
+    @PostConstruct
     public void init(){
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
+
+    @PreDestroy
     public void close(){
         System.out.println("NetworkClient.close");
         disconnect();
