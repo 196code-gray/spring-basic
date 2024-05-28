@@ -1,7 +1,5 @@
 package com.spring.basic.lifecycle;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 /*
 bean 생명주기 콜백 방법
 bean 생성 -> 의존관계 주입 -> 콜백 -> 초기화
@@ -12,8 +10,15 @@ bean 생성 -> 의존관계 주입 -> 콜백 -> 초기화
         why?
             일반 spring의 직접적인 class에 의존.
             외부 라이브러리와 에러 발생시 해결 불가.
+
+2. @Bean 사용.
+    @Bean(init = "", destroy ="")를 사용해서 초기화와 종료 메서드를 직접 지정.
+    인터페이스와 다르게 직접적 의존 x
+    직접 메서드 이름도 변경 가능.
+        destroy기능은 inferred(추론) 을 사용해서 close나 shut down이 적혀있는 메서드를 찾아줌.
+
  */
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
     private String url;
 
     public NetworkClient() {
@@ -36,16 +41,13 @@ public class NetworkClient implements InitializingBean, DisposableBean {
         System.out.println("close = " + this.url);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("NetworkClient.afterPropertiesSet");
+    public void init(){
+        System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
-
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("NetworkClient.destroy");
+    public void close(){
+        System.out.println("NetworkClient.close");
         disconnect();
     }
 }
