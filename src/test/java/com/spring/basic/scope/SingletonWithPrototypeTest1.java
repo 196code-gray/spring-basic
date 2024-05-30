@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -33,21 +34,22 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean bean2 = ac.getBean(ClientBean.class);
         int count2 = bean1.logic();
-        Assertions.assertThat(count2).isEqualTo(2);
+        Assertions.assertThat(count2).isEqualTo(1);
 
     }
 
     @Scope("singleton")
     public static class ClientBean {
-        private final PrototypeBean prototypeBean;
+        private final ObjectProvider<PrototypeBean> prototypeBeansProvider;
 
-        public ClientBean (PrototypeBean prototypeBean){
-            this.prototypeBean = prototypeBean;
+        public ClientBean (ObjectProvider<PrototypeBean> prototypeBeanProvider){
+            this.prototypeBeansProvider = prototypeBeanProvider;
         }
 
         public int logic(){
-            prototypeBean.addCount();
-            return prototypeBean.getCount();
+            PrototypeBean object = prototypeBeansProvider.getObject();
+             object.addCount();
+            return object.getCount();
         }
     }
 
