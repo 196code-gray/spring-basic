@@ -2,14 +2,23 @@ package com.spring.basic.scope;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Provider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
-public class SingletonWithPrototypeTest1 {
 
+public class SingletonWithPrototypeTest1 {
+/*
+ObjectProvider vs Provider
+
+둘 다 기능은 비슷하지만 spring에서 제공해주는 인터페이스가 기능은 더 많음.
+다만, 자바 표준 Provider의 경우 라이브러리를 추가해줘야하는 불편함 있음.
+
+spring 외의 다른 곳에서도 동작해야 한다면 자바 표준.
+그게 아니라면 기능을 보고 선택하자.
+ */
     @Test
     void prototypeFind(){
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class);
@@ -40,14 +49,14 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope("singleton")
     public static class ClientBean {
-        private final ObjectProvider<PrototypeBean> prototypeBeansProvider;
+        private final Provider<PrototypeBean> prototypeBeansProvider;
 
-        public ClientBean (ObjectProvider<PrototypeBean> prototypeBeanProvider){
+        public ClientBean (Provider<PrototypeBean> prototypeBeanProvider){
             this.prototypeBeansProvider = prototypeBeanProvider;
         }
 
         public int logic(){
-            PrototypeBean object = prototypeBeansProvider.getObject();
+            PrototypeBean object = prototypeBeansProvider.get();
              object.addCount();
             return object.getCount();
         }
