@@ -19,16 +19,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 provider를 사용하면 의존관계를 주입할 때는 MyLogger 가 아닌 MyLogger를 찾는 ObjectProvider를 의존관계로 주입 받고,
 getObject()를 사용했을 때 스프링 컨테이너에서 MyLogger bean 생성 후 반환해줌.
+
+또 다른 방법으로는 proxy를 사용
+의존관계 주입시 CGLIB 라이브러리를 이용해서 MyLogger를 상속받은 proxy(가짜 객체)를 주입.
+proxy의 메서드 호출 시 proxy 메서드가 호출 되고 내부에 MyLogger 메서드를 찾을 수 있는 로직 존재.
+해당 로직으로 스프링 컨테이너에서 진짜 MyLogger의 bean을 찾고 메서드를 실행.
+만약 컨테이너에 없으면 생성 후 컨테이너에 등로하고 메서드 실행.
  */
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+    private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request){
-        MyLogger myLogger = myLoggerProvider.getObject();
         String requestURI = request.getRequestURI();
         myLogger.setRequestURL(requestURI);
 
